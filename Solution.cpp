@@ -8,6 +8,29 @@ using namespace std;
 #define MAX 100000
 
 // Inverte os dígitos de um número
+int reverseDigits(int number);
+
+// Busca em largura
+vector<int> breadthFirstSearch(int start, int end);
+
+// Retorna o tamanho de um caminho
+int getPathSize(int start, int end, vector<int> parents);
+
+int main(){
+    vector<int> bfs(MAX);
+    int qtt_cases, start, end;
+
+    cin >> qtt_cases;
+
+    while (qtt_cases--){
+        cin >> start >> end;
+        bfs = breadthFirstSearch(start, end);
+        cout << getPathSize(start, end, bfs) << endl;
+    }
+
+    return 0;
+}
+
 int reverseDigits(int number){
    int reversed = 0, remainder;
 
@@ -20,7 +43,6 @@ int reverseDigits(int number){
    return reversed;
 }
 
-// Busca em largura
 vector<int> breadthFirstSearch(int start, int end){
     int node, button;
     vector<bool> visited(MAX);
@@ -56,25 +78,9 @@ vector<int> breadthFirstSearch(int start, int end){
     return parents;
 }
 
-// Retorna o tamanho de um caminho
 int getPathSize(int start, int end, vector<int> parents){
     int size = 0;
     for (int i = end; i != 0; i = parents[i])
         size++;
     return size - 1;
-}
-
-int main(){
-    vector<int> bfs(MAX);
-    int qtt_cases, start, end;
-
-    cin >> qtt_cases;
-
-    while (qtt_cases--){
-        cin >> start >> end;
-        bfs = breadthFirstSearch(start, end);
-        cout << getPathSize(start, end, bfs) << endl;
-    }
-
-    return 0;
 }

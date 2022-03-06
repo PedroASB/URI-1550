@@ -7,14 +7,11 @@ using namespace std;
 
 #define MAX 100000
 
-// Inverte os dígitos de um número
 int reverseDigits(int number);
 
-// Busca em largura
 vector<int> breadthFirstSearch(int start, int end);
 
-// Retorna o tamanho de um caminho
-int getPathSize(int start, int end, vector<int> parents);
+int getPathSize(int index, vector<int> parents);
 
 int main(){
     vector<int> bfs(MAX);
@@ -25,7 +22,7 @@ int main(){
     while (qtt_cases--){
         cin >> start >> end;
         bfs = breadthFirstSearch(start, end);
-        cout << getPathSize(start, end, bfs) << endl;
+        cout << getPathSize(end, bfs) << endl;
     }
 
     return 0;
@@ -49,38 +46,39 @@ vector<int> breadthFirstSearch(int start, int end){
     vector<int> parents(MAX);
     queue<int> queue;
 
-    queue.push(start);
-
     fill_n(visited.begin(), MAX, false);
-    visited[start] = true;
-
     fill_n(parents.begin(), MAX, 0);
+
+    queue.push(start);
+    visited[start] = true;
 
     while (!queue.empty()){
         node = queue.front();
         queue.pop();
+        
+        button = node + 1;
+        for (int i = 0; i < 2; i++){
 
-		button = node + 1; // Botão 1: adiciona uma unidade
-		for (int i = 0; i < 2; i++){
-
-			if (!visited[button]){
-				queue.push(button);
-				visited[button] = true;
-				parents[button] = node;
-				if (button == end) return parents;
-			}
-
-			button = reverseDigits(node); // Botão 2: inverte os dígitos
-		}
+            if (!visited[button]){
+            	queue.push(button);
+            	visited[button] = true;
+            	parents[button] = node;
+            	if (button == end) return parents;
+            }
+            
+            button = reverseDigits(node);
+        }
 
     }
 
     return parents;
 }
 
-int getPathSize(int start, int end, vector<int> parents){
+int getPathSize(int index, vector<int> parents){
     int size = 0;
-    for (int i = end; i != 0; i = parents[i])
+	
+    for (int i = index; i != 0; i = parents[i])
         size++;
+	
     return size - 1;
 }
